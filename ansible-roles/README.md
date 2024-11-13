@@ -1,56 +1,61 @@
-# DevOps Portfolio: AWS EC2 & Ansible Automation
+# DevOps Portfolio: EC2 Instance Configuration with Ansible
 
-## Overview
-This project automates the configuration of an AWS EC2 instance using **Ansible**. It includes tasks like setting up the server’s hostname, installing necessary packages, securing AWS credentials with **Ansible Vault**, configuring SSH security, and obtaining a wildcard SSL certificate with **Certbot** using **AWS Route 53** for DNS management.
-
-
+This project automates the configuration and management of an **AWS EC2 instance** using **Ansible**. It includes tasks like configuring SSH security, setting up a domain with **AWS Route 53**, and automating SSL certificate generation with **Certbot**. **Ansible Vault** is used to securely store sensitive AWS credentials.
 
 ---
 
-## Prerequisites
+## Project Overview
 
-Before running this project, ensure you have the following:
+This project includes the automation of several key tasks using **Ansible**. Below is an overview of the tasks and the corresponding roles created for each.
 
-- **A domain name**: I used `test-p.xyz` bought from **NameSilo**.
-- **AWS Account**: Access to create and manage EC2 instances and Route 53 hosted zones.
-- **Ansible installed**: Ensure that Ansible is installed and set up on your local machine or server.
-- **IAM Access**: Permissions to create EC2 instances, configure Route 53, and use Certbot.
-
----
-## Tasks Completed
-
-This project includes the following key tasks:
+## Key Tasks and Ansible Roles
 
 1. **EC2 Instance Setup**:
-   - Launched an **EC2 instance** using the AWS EC2 service.
-   - Configured **security groups** to initially allow SSH access on **port 22**.
-   - Later opened **port 44422** for SSH access to enhance security and reduce exposure of the default port.
-   - Set the **hostname** of the EC2 instance to match the domain `test-p.xyz`.
+   - Launched an **EC2 instance** on AWS.
+   - Configured **security groups** to initially allow SSH access on **port 22**, and later changed to **port 44422** for added security.
 
-2. **Automated Configuration with Ansible**:
-   - Created Ansible roles to configure the EC2 instance automatically:
-     - **`hostname_config`**: Used Ansible to set the hostname of the EC2 instance.
-     - **`ssh_security`**: Configured SSH settings for enhanced security (disabling password authentication and enabling key-based authentication).
-     - **`certbot`**: Automated the installation of **Certbot** and generation of a **wildcard SSL certificate** for the domain `test-p.xyz` using DNS validation with **Route 53**.
+2. **Automated Configuration with Ansible Roles**:
+   - Created and organized Ansible roles for each configuration task:
+     - **`hostname`**: Sets the hostname of the EC2 instance.
+     - **`security`**: Configures SSH settings for enhanced security (disabling password authentication and enabling key-based authentication).
+     - **`certbot-route53`**: Installs Certbot and generates a **wildcard SSL certificate** for `test-p.xyz` using DNS validation with **Route 53**.
 
 3. **AWS Credentials Security with Ansible Vault**:
-   - Used **Ansible Vault** to securely store AWS credentials (`aws_access_key_id` and `aws_secret_access_key`) to avoid exposing sensitive information in the code.
+   - Used **Ansible Vault** to securely encrypt AWS credentials (`aws_access_key_id` and `aws_secret_access_key`), avoiding sensitive information in plaintext.
 
 4. **DNS Management with AWS Route 53**:
    - Configured a **Hosted Zone** in **AWS Route 53** for the domain `test-p.xyz`.
-   - Set up **DNS records** in Route 53 to point the domain to the EC2 instance’s Elastic public IP address.
+   - Set up **DNS records** to point the domain to the EC2 instance’s static public IP.
 
 ---
 
-## Code Snippets
 
-Here are key snippets from the project to illustrate the tasks:
-
-### 1. Setting Up AWS Credentials with Ansible Vault
-
-To secure AWS access keys, I used Ansible Vault:
-
-```bash
-ansible-vault create vault/aws_credentials.yml
+---
 
 
+## Ansible Vault for Secure AWS Credentials
+
+To securely manage sensitive AWS credentials, **Ansible Vault** is used to encrypt variables directly. Here’s a step-by-step guide to the Ansible Vault setup in this project.
+
+### Setting Up Ansible Vault
+
+1. **Configure `vault_password_file`**:
+
+   First, we set up a `vault_password_file` for Ansible to use automatically when decrypting vault-protected variables. This file is specified in the **`ansible.cfg`**:
+
+   ```
+   [defaults]
+   vault_password_file = .vault_password
+    
+   ```
+The .vault_password file contains the password for Ansible Vault and should be securely stored and ignored by Git (included in **.gitignore**).
+
+Each key was encrypted individually using the ansible-vault encrypt_string command as shown below:
+
+
+```
+
+ansible-vault encrypt_string  --name 'certbot_aws_secret_access_key'
+
+```
+than enter for key and than ctrl+d twice to gernerate encrypted keys.

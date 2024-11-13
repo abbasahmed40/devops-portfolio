@@ -4,7 +4,7 @@ This project automates the configuration and management of an **AWS EC2 instance
 
 ---
 
-## Project Overview
+## Overview
 
 This project includes the automation of several key tasks using **Ansible**. Below is an overview of the tasks and the corresponding roles created for each.
 
@@ -26,9 +26,6 @@ This project includes the automation of several key tasks using **Ansible**. Bel
 4. **DNS Management with AWS Route 53**:
    - Configured a **Hosted Zone** in **AWS Route 53** for the domain `test-p.xyz`.
    - Set up **DNS records** to point the domain to the EC2 instance’s static public IP.
-
----
-
 
 ---
 

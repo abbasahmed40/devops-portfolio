@@ -1,0 +1,19 @@
+- name: Set a hostname specifying strategy
+  ansible.builtin.hostname:
+    name: vps.test-p.xyz
+    use: systemd
+  become: yes
+
+- name: localhost
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: 127.0.0.1 localhost.localdomain localhost
+  become: yes
+
+- name: localhost
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: 172.31.25.228 vps.test-p.xyz vps
+  become: yes
+
+

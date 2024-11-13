@@ -1,0 +1,30 @@
+- name: install packages
+  apt:
+     update_cache: yes
+     name:
+       - build-essential
+       - bat
+       - fd-find
+       - fzf
+       - git
+       - htop
+       - iotop
+       - lm-sensors
+       - man-db
+       - manpages
+       - p7zip-full
+       - plocate
+       - ripgrep
+       - smartmontools
+       - sudo
+       - zsh
+     state: present
+  become: yes
+
+-  name: ensure plocate-updatedb.timer is started and enabled at boot
+   ansible.builtin.systemd:
+     name: plocate-updatedb.timer
+     state: started
+     enabled: yes
+   become: yes
+

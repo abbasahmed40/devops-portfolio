@@ -1,0 +1,30 @@
+- name: Set net.ipv4.ip_forward
+  ansible.posix.sysctl:
+    name: 'net.ipv4.ip_forward'
+    value: '1'
+    sysctl_file: /etc/sysctl.conf  
+    sysctl_set: true
+    state: present
+    reload: true
+  become: yes
+
+- name: Set net.ipv4.ip_nonlocal_bind
+  ansible.posix.sysctl:
+    name: 'net.ipv4.ip_nonlocal_bind'
+    value: '1'
+    sysctl_file: /etc/sysctl.conf  
+    sysctl_set: true
+    state: present
+    reload: true
+  become: yes
+
+- name: Set fs.inotify.max_user_watches
+  ansible.posix.sysctl:
+    name: 'fs.inotify.max_user_watches'
+    value: '204800'
+    sysctl_file: /etc/sysctl.conf  
+    sysctl_set: true
+    state: present
+    reload: true
+  become: yes
+

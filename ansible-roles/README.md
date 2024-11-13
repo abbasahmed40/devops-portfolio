@@ -28,8 +28,37 @@ This project includes the automation of several key tasks using **Ansible**. Bel
    - Set up **DNS records** to point the domain to the EC2 instance’s static public IP.
 
 ---
+## Certbot Policy for Route 53 DNS Validation
 
+To enable Certbot to use DNS validation with Route 53, a specific IAM policy is required. This policy grants permissions to list hosted zones, manage record sets, and retrieve change statuses. 
 
+**Certbot Policy Example** (Replace `YOURHOSTEDZONEID` with your actual Route 53 Hosted Zone ID):
+
+```json
+{
+    "Version": "2012-10-17",
+    "Id": "certbot-dns-route53-sample-policy",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ListHostedZones",
+                "route53:GetChange"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ChangeResourceRecordSets"
+            ],
+            "Resource": [
+                "arn:aws:route53:::hostedzone/YOURHOSTEDZONEID"
+            ]
+        }
+    ]
+}
+```
 ## Ansible Vault for Secure AWS Credentials
 
 To securely manage sensitive AWS credentials, **Ansible Vault** is used to encrypt variables directly. Here’s a step-by-step guide to the Ansible Vault setup in this project.
